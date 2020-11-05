@@ -1,61 +1,90 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Introduction
+Ce document est là pour vous aider à configurer étape par étape la seconde partie du workshop sur VueJS avec Laravel.
+Merci de suivre toutes les étapes attentivement et de venir vers moi en cas de problème.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Prérequis
+Installer les prérequis demandés dans l'email de Steve :
+- XAMPP à jour : https://www.apachefriends.org/fr/index.html
+    - Avec PHP 7.3 activé au minimum
+	- Avec MySQL (>5.6) ou MariaDB équivalent
+- Composer : https://getcomposer.org/doc/00-intro.md#installation-windows
+- Laravel : https://laravel.com/docs/8.x/installation#installing-laravel
 
-## About Laravel
+> **Attention** : La suite de l'installation se fait avec les prérequis au-dessus, vous pouvez utiliser d'autres outils si vous le souhaitez, mais assurez-vous de pouvoir configurer la suite !
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Installation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+0. Vérifiez que XAMPP et Composer soient bien installés sur votre machine (redémarrez vos shells et vos IDE après l'installation)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Allez dans le dossier `C:\xampp\htdocs` ouvrez un bash et clonez le projet https://github.com/SpicyPaper/workshop-vuejs-with-laravel-backend
+	- !!! Assurez-vous d'avoir la dernière version du projet !!!
+	- **Et ne copiez collez pas un .zip, clonez le projet (vraiment ! demandez moi, je peux vous aider si vous n'y arrivez pas)**
 
-## Learning Laravel
+2. Une fois le projet cloné, aller dans `C:\Windows\System32\drivers\etc`, ouvrez le fichier `hosts` et ajoutez-y une ligne supplémentaire (vous aurez besoin des accès admin)
+```
+127.0.0.1  workshop-vuejs.test
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+3. Allez ensuite ici `C:\xampp\apache\conf\extra`, ouvrez le fichier `httpd-vhosts.conf` et ajoutez-y une ligne également
+> Si les noms sont les mêmes vous pouvez copier coller, mais si le nom de votre repo est différent, vous devrez peut être modifier le chemin après "DocumentRoot" ou modifier l'url après "VirtualHost"
+```
+<VirtualHost workshop-vuejs.test:80>
+    DocumentRoot "C:/xampp/htdocs/workshop-vuejs-with-laravel-backend/public"
+</VirtualHost>
+```
+> Si vous voulez plus d'info sur ces manipulations : https://divpusher.com/blog/how-to-run-laravel-on-windows-with-xampp/
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+4. Installez les dépendances de composer depuis le dossier du projet
+```
+composer install
+```
 
-## Laravel Sponsors
+5. Créer un fichier .env à partir de .env.example dans le dossier du projet
+```
+cp .env.example .env
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+6. Générer une clé d'encryption
+```
+php artisan key:generate
+```
 
-### Premium Partners
+7. Copier ces variable dans votre .env
+```
+APP_URL=http://workshop-vuejs.test
+...
+DB_DATABASE=workshop_vuejs
+...
+PASSPORT_LOGIN_ENDPOINT="http://workshop-vuejs.test/oauth/token"
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+8. Redémarrez XAMPP, puis démarrez MySQL et Apache sur XAMPP
 
-## Contributing
+9. Une fois les 2 services de XAMPP démarrés, cliquez sur "Admin" du service MySQL et créez une nouvelle base de données vierge et nommez-la "workshop_vuejs" pour correspondre au fichier .env
+ 
+10. Exécutez les migrations Laravel
+```
+php artisan migrate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+11. Configurer Passport (private key pour l'authentification)
+```
+php artisan passport:install
+```
 
-## Code of Conduct
+12. La précédente commande vous affiche des clés utiles pour l'authentification par Token avec Passport (https://laravel.com/docs/8.x/passport)
+	- Copiez collez la seconde "Client secret" et modifier le fichier .env en remplaçant <client_id> par 2 si vous avez bien pris la seconde "Client secret" et <client_scret> par la chaine de caractère précédemment générée.
+```
+PASSPORT_CLIENT_ID=<client_id>
+PASSPORT_CLIENT_SECRET=<client_secret>
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+13. Redémarrez encore une fois les 2 services de XAMPP (MySQL et Apache) et vous devriez être bon :)
 
-## Security Vulnerabilities
+14. Pour testez que l'API répondent correctement et que vous avez correctement tout configuré, veuillez tester cet URL, en remplaçant "client_secret" avec la "Client Secret" que vous avez mit dans votre .env :
+http://workshop-vuejs.test/api/test/client_secret
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Si la réponse de cet URL est positif, vous avez correctement configuré le BackEnd et vous êtes prêt à suivre la suite du workshop, sinon contactez moi !
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Merci.
+@SpicyPaper
