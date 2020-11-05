@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get("/test", function(Request $request) {
-    return $request;
+    return response()->json("Test OK, the API is available!");
 });
 
 Route::middleware('auth:api')->group(function () {
