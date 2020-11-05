@@ -73,10 +73,14 @@ php artisan passport:install
 ```
 
 12. La précédente commande vous affiche des clés utiles pour l'authentification par Token avec Passport (https://laravel.com/docs/8.x/passport)
-	- Copiez collez la seconde "Client secret" et modifier le fichier .env en remplaçant <client_id> par 2 si vous avez bien pris la seconde "Client secret" et <client_scret> par la chaine de caractère précédemment générée.
+
+Copiez la valeur de la clé "Client secret" du deuxième client, puis collez là dans le .env après PASSPORT_CLIENT_SECRET= :
 ```
-PASSPORT_CLIENT_ID=<client_id>
-PASSPORT_CLIENT_SECRET=<client_secret>
+PASSPORT_CLIENT_SECRET=(valeur de la clé)
+```
+Tout en précisant l'ID du client à 2 :
+```
+PASSPORT_CLIENT_ID=2
 ```
 
 13. Redémarrez encore une fois les 2 services de XAMPP (MySQL et Apache) et vous devriez être bon :)
