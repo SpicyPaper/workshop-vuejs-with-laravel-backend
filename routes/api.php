@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,11 @@ Route::get("/test", function(Request $request) {
 
 Route::middleware('auth:api')->group(function () {
     Route::post("/logout", [AuthController::class, "logout"]);
+    Route::post("/coffee/inc", [UserController::class, "incCoffeeCounter"]);
+    Route::post("/coffee/dec", [UserController::class, "decCoffeeCounter"]);
+    Route::get("/coffee", [UserController::class, "fetchCurrentCoffeeCounter"]);
+    Route::get("/user", [UserController::class, "fetchAuthUser"]);
+    Route::get("/user/all", [UserController::class, "fetchAllUser"]);
 });
 
 Route::post("/login", [AuthController::class, "login"]);
